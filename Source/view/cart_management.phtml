@@ -1,0 +1,47 @@
+<div class="jumbotron text-center app_standard center_screen app_jumbotron">
+    <h1>Quản lý điện thoại</h1>
+
+    <p>Sửa <span class="text-danger">Chi tiết đơn đặt hàng</span>.</p>
+</div>
+<div class="app_standard center_screen">
+    <?php
+    include 'Process/Model/AccountModel.php';
+    ?>
+    <div class="page-header">
+        <h1>
+            Tài khoản: <?php echo AccountModel::getAccountByID(addslashes($_POST['userID'])) ?><br/>
+            <small>Mã khách hàng: <?php echo addslashes($_POST['userID']) ?></small>
+        </h1>
+        <input id="cartID" type="hidden" value="<?php echo addslashes($_POST['id']) ?>" />
+        <input id="total" type="hidden" value="<?php echo addslashes($_POST['total']) ?>" />
+    </div>
+    <div class="widget">
+        <a href="../page_manager_order.php" style="text-decoration: none; color: #ffffff" title="Trở về trang Quản lý Đơn đặt hàng" class="glyphicon glyphicon-backward cart_management_backward"></a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mã điện thoại</th>
+                <th>Tên điện thoại</th>
+                <th>Số lượng</th>
+                <td>#</td>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            include 'Process/Model/MobileModel.php';
+            include 'Process/Model/CartModel.php';
+            foreach (CartModel::getCarts(addslashes($_POST['id'])) as $cart) : ?>
+            <tr>
+                <td><?php echo $cart['mobileID'] ?></td>
+                <td><?php echo MobileModel::getNameMobileById($cart['mobileID']) ?></td>
+                <td><?php echo $cart['quantity'] ?></td>
+                <td class="hidden"><?php echo MobileModel::getQuantityByID($cart['mobileID']) ?></td>
+                <td>
+                    <span class="glyphicon glyphicon-remove remove-sign"></span>
+                </td>
+            </tr>
+        <?php endforeach ?>
+        </tbody>
+    </table>
+</div>

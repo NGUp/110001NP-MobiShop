@@ -1,0 +1,77 @@
+<div class="app_standard center_screen">
+    <?php
+        if (isset($_SESSION['cart']) && count($_SESSION['cart']) != 0) {
+    ?>
+        <div style="margin-top: 20px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th class="app_cart_width_header">Giá</th>
+                        <th class="app_cart_width_header">Số lượng</th>
+                        <th class="app_cart_width_header">Thành tiền</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+
+                $total = 0;
+                include '/Process/System/DataProvider.php';
+
+                    foreach($_SESSION['cart'] as $product_id => $quantity) {
+                        $sql = "select ID, Name, Image, Price, Quantity from mobile where ID = '$product_id'";
+                        $result = DataProvider::ExecuteQuery($sql);
+
+                        if (mysql_num_rows($result) > 0) {
+                            list ($id, $name, $image, $price, $stored) = mysql_fetch_row($result);
+
+                            $cost = $price * $quantity;
+                            $total = $total + $cost;
+                            ?>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <div class="col-md-3">
+                                            <img style="height: 72px; width: 43px" src="../img/Mobile/<?php echo$image ?>" alt="Sample Image"/>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <?php echo $name ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><?php echo number_format($price) . ' VND' ?></td>
+                                <td><input name="quantity" type="text" class="app_cart_cell quantity-value" value="<?php echo $quantity ?>"/></td>
+                                <td><?php echo number_format($cost) . ' VND' ?></td>
+                                <td><span class="glyphicon glyphicon-remove remove-sign"></span></td>
+                                <td class="hidden"><?php echo $id ?></td>
+                                <td class="hidden"><?php echo $stored ?></td>
+                                <td class="hidden"><?php echo $price ?></td>
+                                <td class="hidden"><?php echo $cost ?></td>
+                            </tr>
+                        <?php
+                        }
+                    }
+                ?>
+                </tbody>
+            </table>
+            <div class="page-header">
+                <input type="text" class="hidden" id="total-value" value="<?php echo $total ?>"/>
+                <h1>Tổng tiền: <small id="total"><?php echo number_format($total) . ' VND' ?></small></h1>
+                <button type="button" id="cancel" class="btn btn-default">Hủy</button>
+                <button type="button" id="payment" class="btn btn-success">Thanh toán</button>
+            </div>
+        </div>
+    <?php
+        }
+        else {
+    ?>
+            <div class="alert alert-success" style="margin-top: 30px; text-align: center">
+                <strong>Vui lòng chọn sản phẩm cho vào giỏ hàng!</strong> Giỏ hàng của bạn hiện đang trống.
+            </div>
+
+        <?php
+        }
+    ?>
+
+</div>

@@ -1,0 +1,11 @@
+<ul class="nav nav-pills nav-stacked">
+    <?php
+    require 'Process/Model/MobileModel.php';
+
+    foreach (ManufacturerModel::getManufacturer() as $manufacturer) {
+        echo "<li><a href='page_search.php?act=manufacturer&keyword=" . $manufacturer['name'] . "'>" .
+            "<img class='app_search_logo app_search_navigator_item'style='margin-right: 8px' src='../../img/Manufacturer/" .  $manufacturer['logo'] . "'/>" .
+            $manufacturer['name'] . "<span class='badge app_search_badge'>" . MobileModel::getQuantity($manufacturer['name']) ."</span></a></li>";
+    }
+    ?>
+</ul>

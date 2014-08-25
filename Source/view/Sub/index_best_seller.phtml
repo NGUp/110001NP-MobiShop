@@ -1,0 +1,61 @@
+<div class="row" style="margin-top: 30px">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background: #329FD6; color: #ffffff;">
+            <h3 class="panel-title" style="font-weight: bold">Sản phẩm bán chạy</h3>
+        </div>
+        <div class="panel-body">
+            <?php
+            $index = 0;
+            include_once 'Process/Model/MobileModel.php';
+            foreach (MobileModel::getMobilesByDescSale() as $mobile) {
+                if ($index % 3 == 0) {
+                    if ($index != 0) {
+                        echo '</div>';
+                        echo '<div class="app_space_line"></div>';
+                        echo '<div class="row">';
+                    } else {
+                        echo '<div class="row">';
+                    }
+                }
+                ++$index;
+                ?>
+                <div class="col-md-4 thumbnail" style="border: 0px solid #ffffff">
+                    <div class="col-md-4">
+                        <a href="../page_detail_product.php?ID=<?php echo $mobile['id'] ?>">
+                            <img src="../img/Mobile/<?php echo $mobile['image'] ?>" alt="<?php echo $mobile['name'] ?>">
+                        </a>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <label><?php echo $mobile['name'] ?></label>
+                        </div>
+                        <div class="row">
+                            Giá: <?php echo number_format($mobile['price']) . ' VND' ?>
+                        </div>
+                        <?php
+                        if (isset($_SESSION['permission'])) {
+                            ?>
+                            <div class="row">
+                                <button class="btn btn-success cart-button">
+                                    <span class="glyphicon glyphicon-shopping-cart" style="font-size: 20px"></span>
+                                </button>
+                                Giỏ hàng
+                                <input type="hidden" value="<?php echo $mobile['id'] ?>"/>
+                                <img src="../img/hot.jpg" style="width: 40px" alt="Hot">
+                            </div>
+                        <?php
+                        }
+                        else {
+                            echo '<img src="../img/hot.jpg" style="width: 40px" alt="Hot">';
+                        }
+                        ?>
+
+                    </div>
+                </div>
+            <?php
+            }
+            echo '</div>';
+            ?>
+        </div>
+    </div>
+</div>

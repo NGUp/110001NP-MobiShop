@@ -1,0 +1,234 @@
+<div style="margin-top: 20px">
+<?php
+
+if (isset($_GET['keyword']) && isset($_GET['act'])) {
+    $keyword = addslashes($_GET['keyword']);
+    $action = addslashes($_GET['act']);
+}
+else {
+    $keyword = '';
+    $action = '';
+}
+
+if ($keyword == '' || $action == '') {
+    ?>
+    <div class="alert alert-warning">
+        <strong>Bạn muốn tìm sản phẩm nào?</strong><br/>Vui lòng gõ tên sản phẩm,nhà sản xuất hoặc loại sản phẩm vào
+        khung tìm kiếm.
+    </div>
+<?php
+} else {
+    if ($action == 'price') {
+        if ($keyword == 'priceLevel1') {
+            ?>
+            <div class="page-header">
+                <h1>Tìm kiếm với mức giá từ
+                    <small class='search_tag'>200.000 - 1.000.000 VND</small>
+                </h1>
+            </div>
+            <?php
+            $query = "select ID, Name, Price, Image from mobile where Price > 199999 and Price < 1000001";
+        } elseif ($keyword == 'priceLevel2') {
+            ?>
+            <div class="page-header">
+                <h1>Tìm kiếm với mức giá từ
+                    <small class='search_tag'>1.000.000 - 5.000.000 VND</small>
+                </h1>
+            </div>
+            <?php
+            $query = "select ID, Name, Price, Image from mobile where Price > 1000000 and Price < 5000001";
+        } elseif ($keyword == 'priceLevel3') {
+            ?>
+            <div class="page-header">
+                <h1>Tìm kiếm với mức giá từ
+                    <small class='search_tag'>5.000.000 - 10.000.000 VND</small>
+                </h1>
+            </div>
+            <?php
+            $query = "select ID, Name, Price, Image from mobile where Price > 5000000 and Price < 10000001";
+        } elseif ($keyword == 'priceLevel4') {
+            ?>
+            <div class="page-header">
+                <h1>Tìm kiếm với mức giá từ
+                    <small class='search_tag'>10.000.000 - 20.000.000 VND</small>
+                </h1>
+            </div>
+            <?php
+            $query = "select ID, Name, Price, Image from mobile where Price > 10000000 and Price < 20000001";
+        } else {
+            ?>
+            <div class="page-header">
+                <h1>Tìm kiếm với mức giá từ
+                    <small class='search_tag'>20 triệu trở lên</small>
+                </h1>
+            </div>
+            <?php
+            $query = "select ID, Name, Price, Image from mobile where Price > 20000000";
+        }
+    } elseif ($action == 'manufacturer') {
+        ?>
+        <div class="page-header">
+            <h1>Tìm kiếm với từ khóa
+                <small class='search_tag'><?php echo $keyword ?></small>
+            </h1>
+        </div>
+        <?php
+        $query = "select ID, Name, Price, Image from mobile where Company like '%$keyword%'";
+    } else if ($action == 'type') {
+        ?>
+        <div class="page-header">
+            <h1>Tìm kiếm với từ khóa
+                <small class='search_tag'><?php echo $keyword ?></small>
+            </h1>
+        </div>
+        <?php
+        $query = "select ID, Name, Price, Image from mobile where Type like '%$keyword%'";
+    } elseif ($action == 'advance') {
+        if (isset($_POST['submit-advance'])) {
+            $tmp_query = '';
+            $brand = addslashes($_POST['brand']);
+            $type = addslashes($_POST['type']);
+            $origin = addslashes($_POST['origin']);
+            $price = addslashes($_POST['price']);
+
+            if ($brand != -1) {
+                $tmp_query .= " Company = '$brand'";
+            }
+            if ($origin != -1) {
+                if ($tmp_query != '') {
+                    $tmp_query .= ' and';
+                }
+                $tmp_query .= " Source = '$origin'";
+            }
+            if ($type != -1) {
+                if ($tmp_query != '') {
+                    $tmp_query .= ' and';
+                }
+                $tmp_query .= " Type = '$type'";
+            }
+            if ($price != -1) {
+                if ($tmp_query != '') {
+                    $tmp_query .= ' and';
+                }
+                if ($price == 'priceLevel1') {
+                    $tmp_query .= " Price > 199999 and Price < 1000001";
+                } elseif ($price == 'priceLevel2') {
+                    $tmp_query .= " Price > 1000000 and Price < 5000001";
+                } elseif ($price == 'priceLevel3') {
+                    $tmp_query .= " Price > 5000000 and Price < 10000001";
+                } elseif ($price == 'priceLevel4') {
+                    $tmp_query .= " Price > 10000000 and Price < 20000001";
+                } else {
+                    $tmp_query .= " Price > 20000000";
+                }
+            }
+
+            if ($tmp_query != '') {
+                $query = "select ID, Name, Price, Image from mobile where " . $tmp_query;
+            } else {
+                $query = "select ID, Name, Price, Image from mobile";
+            }
+            ?>
+            <div class="page-header">
+                <h1>Tìm kiếm với từ khóa</h1>
+                <ul style="list-style: none"><?php
+                    if ($brand != -1)
+                        echo "<li class='search_tag'>$brand</li>";
+                    if ($type != -1)
+                        echo "<li class='search_tag'>$type</li>";
+                    if ($origin != -1)
+                        echo "<li class='search_tag'>$origin</li>";
+                    if ($price != -1)
+                        if ($price == 'priceLevel1')
+                            echo "<li class='search_tag'>200.000 - 1.000.000 VND</li>";
+                        elseif ($price == 'priceLevel2')
+                            echo "<li class='search_tag'>1.000.000 - 5.000.000 VND</li>";
+                        elseif ($price == 'priceLevel3')
+                            echo "<li class='search_tag'>5.000.000 - 10.000.000 VND</li>";
+                        elseif ($price == 'priceLevel4')
+                            echo "<li class='search_tag'>10.000.000 - 20.000.000 VND</li>";
+                        else
+                            echo "<li class='search_tag'>'Hơn 20.000.000 VND'</li>";
+                    ?>
+                </ul>
+            </div>
+        <?php
+        }
+        else {
+            $query = "select ID from mobile where ID = -1";
+        }
+    } else {
+        ?>
+        <div class="page-header">
+            <h1>Tìm kiếm với từ khóa
+                <small class='search_tag'><?php echo $keyword ?></small>
+            </h1>
+        </div>
+        <?php
+        $query = "select ID, Name, Price, Image from mobile where Name like '%$keyword%'";
+    }
+
+    $result = DataProvider::ExecuteQuery($query);
+    $num_rows = mysql_num_rows($result);
+
+    if ($num_rows == 0) {
+        ?>
+        <div class="alert alert-warning">
+            <strong>Hiện mẫu điện thoại này chưa có mặt tại MobiShop.</strong><br/>Mẫu điện thoại này sẽ có mặt tại
+            MobiShop trong thời gian sớm nhất.
+        </div>
+    <?php
+    } else {
+        $index = 0;
+    ?>
+        <input type="hidden" class="max-height" value= "<?php echo ((ceil($num_rows /9)) * 1168) ?>" />
+        <div class="wrapper-content">
+    <?php
+        if ($result != false) {
+            while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+                if ($index % 3 == 0) {
+                    if ($index != 0) {
+                        echo '</div>';
+                        echo '<div class="row">';
+                    } else {
+                        echo '<div class="row">';
+                    }
+                }
+                ++$index;
+                ?>
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <form method="get" action="../../page_detail_product.php">
+                            <img class="app_thumbnail_search" src="../../img/Mobile/<?php echo $row['Image'] ?>"
+                                 alt="Sample Image"/>
+
+                            <div class="caption">
+                                <b><?php echo $row['Name'] ?></b>
+
+                                <p>Giá: <?php echo number_format($row['Price']) . ' VND' ?></p>
+
+                                <p>
+                                    <?php
+                                    if (isset($_SESSION['permission'])) {
+                                        echo '<input type="button" class="btn btn-primary cart-button" role="button" value="Giỏ hàng"/>';
+                                    }
+                                    ?>
+                                    <input type="text" class="hidden" name="ID" value="<?php echo $row['ID'] ?>"/>
+                                    <input type="submit" class="btn btn-default" value="Chi tiết"/>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            <?php
+            }
+            echo '</div>';
+        }
+        ?>
+        </div>
+        <button class="btn btn-primary see-more">Xem thêm</button>
+<?php
+    }
+}
+?>
+</div>

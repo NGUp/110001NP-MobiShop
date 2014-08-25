@@ -1,0 +1,62 @@
+<form method="post" action="../../page_search.php?act=advance&keyword=anonymous">
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-4">
+                <label>Nhà sản xuất</label>
+                <select name="brand" class="form-control" style="width: 170px">
+                    <option value="-1">-- Tất cả --</option>
+                    <?php
+                    include_once 'Process/Model/ManufacturerModel.php';
+                    foreach (ManufacturerModel::getManufacturer() as $manufacturer) :?>
+                        <option value="<?php echo $manufacturer['name'] ?>"><?php echo $manufacturer['name'] ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label>Xuất xứ</label>
+                <select name="origin" class="form-control">
+                    <option value="-1">-- Tất cả --</option>
+                    <?php
+                    include_once 'Process/Model/OriginModel.php';
+                    foreach (OriginModel::getOrigins() as $country) : ?>
+                        <option value="<?php echo $country ?>"><?php echo $country ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="submit" class="btn btn-success search_button_advance"name="submit-advance" value="Tìm kiếm" />
+            </div>
+        </div>
+        <div class="app_space_line"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Giá cả</label>
+                <select name="price" class="form-control" style="width: 170px">
+                    <option value="-1">-- Tất cả --</option>
+                    <option value="priceLevel1">200.000 - 1.000.000</option>
+                    <option value="priceLevel2">1.000.000 - 5.000.000</option>
+                    <option value="priceLevel3">5.000.000 - 10.000.000</option>
+                    <option value="priceLevel4">10.000.000 - 20.000.000</option>
+                    <option value="priceLevel5">Hơn 20 triệu</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label>Loại điện thoại</label>
+                <select name="type" class="form-control">
+                    <option value="-1">-- Tất cả --</option>
+                    <?php
+                    include_once 'Process/Model/TypeMobileModel.php';
+                    foreach (TypeMobileModel::getTypes() as $type) :?>
+                        <option value="<?php echo $type['type'] ?>"><?php echo $type['type'] ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+            <img src="../../img/searching_ladybug.jpg" alt="Searching" width="128px">
+    </div>
+
+</form>

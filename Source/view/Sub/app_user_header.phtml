@@ -1,0 +1,28 @@
+<header>
+    <div class="header_user">
+        <div class="app_standard center_screen">
+            <div id="app_logo" class="left">
+                <a href="../index.php" target="_self"><img src="../img/logo_user.png"></a>
+            </div>
+            <form method="get" action="../page_search.php">
+                <div id="app_search_box" class="input-group search_control">
+                    <input type="hidden" name="act" value="search"/>
+                    <input ng-model="app_input_search" type="text" name="keyword" id="app_search_box" class="form-control" placeholder="Nhập từ khóa cần tìm">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" id="search-button" type="submit">Tìm kiếm</button>
+                </span>
+                </div>
+                <div class="right app_login">
+                    <?php
+                    if (isset($_SESSION['permission'])) {
+                        include 'app_user_login.phtml';
+                    }
+                    else {
+                        include 'app_login_register.phtml';
+                    }
+                    ?>
+                </div>
+            </form>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,140 @@
+<div class="jumbotron text-center app_standard center_screen app_jumbotron">
+    <h1>Quản lý điện thoại</h1>
+    <p>Sửa chi tiết <span class="text-danger">điện thoại</span>.</p>
+</div>
+<div class="app_standard center_screen"">
+<div id="alert">
+</div>
+<form method="post" enctype="multipart/form-data" action="../Process/EditMobileManageController.php">
+    <div style="margin-top: 30px"></div>
+    <input class="hidden" name="id" value="<?php echo addslashes($_POST['id']) ?>"/>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Tên điện thoại <abbr title="Bắt buộc" class="app_required">*</abbr></label>
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="mobile" name="mobile" class="form-control text_box"
+                   value="<?php echo addslashes($_POST['name']) ?>"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Nhà sản xuất</label>
+        </div>
+        <div class="col-md-7">
+            <select id="manufacturer" name="manufacturer" class="form-control text_box">
+                <option value selected="selected"
+                        style="text-align: center"><?php echo addslashes($_POST['company']) ?></option>
+                <?php
+                include 'Process/Model/ManufacturerModel.php';
+                foreach (ManufacturerModel::getManufacturer() as $manufacturer) {
+                    if ($manufacturer != addslashes($_POST['company'])) {
+                        ?>
+                        <option value="<?php echo $manufacturer['name'] ?>"><?php echo $manufacturer['name'] ?></option>
+                    <?php
+                    }
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Xuất xứ</label>
+        </div>
+        <div class="col-md-7">
+            <select id="origin" name="origin" class="form-control text_box">
+                <option value selected="selected"
+                        style="text-align: center"><?php echo addslashes($_POST['source']) ?></option>
+                <?php
+                include 'Process/Model/OriginModel.php';
+                foreach (OriginModel::getOrigins() as $origin) {
+                    if ($origin != addslashes($_POST['source'])) {
+                        ?>
+                        <option value="<?php echo $origin ?>"><?php echo $origin ?></option>
+                    <?php
+                    }
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Hình ảnh</label>
+        </div>
+        <div class="col-md-7">
+            <input type="file" id="image" name="image" class="btn btn-default"/>
+            <input type="hidden" id="currentImage" name="currentImage"
+                   value="<?php echo addslashes($_POST['image']) ?>"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Loại điện thoại</label>
+        </div>
+        <div class="col-md-7">
+            <select id="type" name="type" class="form-control text_box">
+                <option value selected="selected"
+                        style="text-align: center"><?php echo addslashes($_POST['type']) ?></option>
+                <?php
+                include 'Process/Model/TypeMobileModel.php';
+                foreach (TypeMobileModel::getTypes() as $type) {
+                    if ($type != addslashes($_POST['type'])) {
+                        ?>
+                        <option value="<?php echo $type['type'] ?>"><?php echo $type['type'] ?></option>
+                    <?php
+                    }
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Giá cả</label>
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="price" name="price" value="<?php echo addslashes($_POST['price']) ?>"
+                   class="form-control text_box"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Mô tả</label>
+        </div>
+        <div class="col-md-7">
+            <textarea rows="6" cols="110" id="description" name="description" class="text_area text_box"
+                      style="max-width: 100%">
+                <?php echo addslashes($_POST['description']) ?>
+            </textarea>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Số lượng</label>
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="quantity" name="quantity" value="<?php echo addslashes($_POST['quantity']) ?>"
+                   class="form-control text_box"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <input type="hidden" name="view" value="<?php echo addslashes($_POST['view']) ?>"/>
+    <input type="hidden" name="sale" value="<?php echo addslashes($_POST['sale']) ?>"/>
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-7">
+            <input type="button" class="btn btn-primary" name="submit" id="submit" value="Xác nhận"/>
+            <input type="button" class="btn btn-default" name="cancel" id="cancel" value="Hủy"/>
+        </div>
+    </div>
+</form>
+</div>

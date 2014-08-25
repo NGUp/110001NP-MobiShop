@@ -1,0 +1,80 @@
+/* GLOBAL CSS */
+header {
+    height: 70px
+}
+footer {
+    height: 50px;
+}
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+.center {
+    text-align: center;
+}
+.center_screen {
+	margin: 0 auto;
+}
+.app_standard {
+    width: 980px;
+}
+.app_header {
+    margin: 0px 150px 0px 150px;
+}
+.app_footer li{
+    list-style: none;
+}
+.app_footer li:first-child {
+    margin-left: 0px;
+}
+.app_footer_line {
+    height: 2px;
+    background: #cccccc;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.app_space_line {
+    padding-top: 10px;
+}
+.app_header{
+    color: #ffffff;
+}
+.text_area {
+    border-radius: 4px;
+    width: 100%;
+}
+.text_area:focus {
+    border: 1px solid #66afe9;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+.image_footer {
+    width: 19%;
+}
+.widget_feedback {
+    position: fixed;
+    bottom: 0%;
+}
+.widget_status {
+    width: 160px;
+    height: 40px;
+    top: 11%;
+    position: fixed;
+}
+.widget_status_content {
+    position: fixed;
+    top: 12%;
+    background: transparent;
+    border: 0px solid #ffffff;
+    margin-left: 40px;
+    color: white;
+}
+.widget_contact {
+    position: fixed;
+    top: 100%;
+}
+.template {
+    display: none;
+}

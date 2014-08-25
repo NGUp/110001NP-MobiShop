@@ -1,0 +1,28 @@
+<div class="app_standard center_screen" style="margin-top: 10px">
+    <div class="row">
+        <ul>
+            <?php
+            include_once 'Process/Model/ManufacturerModel.php';
+            foreach (ManufacturerModel::getManufacturer() as $manufacturer) : ?>
+                <li style="display: inline-block" title="<?php echo $manufacturer['name'] ?>">
+                    <a href="page_search.php?act=manufacturer&keyword=<?php echo $manufacturer['name'] ?>">
+                        <img class="app_search_logo" src="../img/Manufacturer/<?php echo $manufacturer['logo'] ?>"/>
+                    </a>
+                </li>
+            <?php endforeach ?>
+        </ul>
+    </div>
+    <div class="app_footer_line"></div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row clearfix" style="margin-left: 10px">
+                <?php include 'Sub/index_slider.phtml' ?>
+                <?php include 'Sub/index_best_seller.phtml' ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <?php include 'Sub/index_new_mobiles.phtml' ?>
+        </div>
+    </div>
+</div>

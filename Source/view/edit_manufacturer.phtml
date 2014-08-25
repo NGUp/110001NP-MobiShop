@@ -1,0 +1,40 @@
+<div class="jumbotron text-center app_standard center_screen app_jumbotron">
+    <h1>Quản lý nhà sản xuất</h1>
+
+    <p>Sửa chi tiết <span class="text-danger">nhà sản xuất</span>.</p>
+</div>
+<div class="app_standard center_screen"">
+<div id="alert">
+</div>
+<form method="post" enctype="multipart/form-data" action="../Process/EditManufacturerManageController.php">
+    <div style="margin-top: 30px"></div>
+    <input class="hidden" name="id" value="<?php echo addslashes($_POST['id']) ?>"/>
+
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Tên nhà sản xuất <abbr title="Bắt buộc" class="app_required">*</abbr></label>
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="name" name="name" class="form-control text_box"
+                   value="<?php echo addslashes($_POST['name']) ?>"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Logo</label>
+        </div>
+        <div class="col-md-7">
+            <input type="file" id="image" name="image" class="btn btn-default"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-7">
+            <input type="button" class="btn btn-primary" name="submit" id="submit" value="Xác nhận"/>
+            <input type="button" class="btn btn-default" name="cancel" id="cancel" value="Hủy"/>
+        </div>
+    </div>
+</form>
+</div>

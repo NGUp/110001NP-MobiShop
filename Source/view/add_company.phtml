@@ -1,0 +1,37 @@
+<div class="jumbotron text-center app_standard center_screen app_jumbotron">
+    <h1>Quản lý Nhà sản xuất</h1>
+
+    <p>Thêm <span class="text-danger">nhà sản xuất</span>.</p>
+</div>
+<div class="app_standard center_screen" style="margin-top: 30px">
+    <div id="alert">
+    </div>
+    <form method="post" enctype="multipart/form-data" action="../Process/AddManufacturerManageController.php">
+        <div style="margin-top: 30px"></div>
+        <div class="row">
+            <div class="col-md-5">
+                <label class="right">Hãng sản xuất <abbr title="Bắt buộc" class="app_required">*</abbr></label>
+            </div>
+            <div class="col-md-7">
+                <input type="text" id="manufacturer" name="manufacturer" class="form-control text_box"/>
+            </div>
+        </div>
+        <div class="app_space_line"></div>
+        <div class="row">
+            <div class="col-md-5">
+                <label class="right">Hình ảnh</label>
+            </div>
+            <div class="col-md-7">
+                <input type="file" id="image" name="image" class="btn btn-default"/>
+            </div>
+        </div>
+        <div class="app_space_line"></div>
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-7">
+                <input type="button" class="btn btn-primary" name="submit" id="submit" value="Xác nhận"/>
+                <input type="button" class="btn btn-default" name="cancel" id="cancel" value="Hủy"/>
+            </div>
+        </div>
+    </form>
+</div>

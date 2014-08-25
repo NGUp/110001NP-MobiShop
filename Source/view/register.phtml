@@ -1,0 +1,151 @@
+<form name="registerForm" method="post" action="../Process/RegisterController.php" ng-controller="registerController">
+    <div class="app_standard center_screen">
+        <div>
+            <label class="register_title">Thông tin cá nhân</label>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="right register_label">Họ tên của bạn</div>
+                </div>
+                <div id="app_register_fullname" class="col-md-7">
+                    <input ng-model="app_input_fullname" id="register-name" type="text" name="register_fullName" class="app_textbox" size="50px" placeholder="Tên bạn là gì?">
+                </div>
+            </div>
+            <div class="app_space_line"></div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="right register_label">Ngày sinh</div>
+                </div>
+                <div class="col-md-7">
+                    <select name="register_day" id="register_day" class="register_cell app_textbox app_select_box">
+                        <option value="">[Ngày]</option>
+                        <?php for ($i = 1; $i < 32; $i += 1){ echo "<option value='$i'>$i</option>"; } ?>
+                    </select>
+                    <select name="register_month" id="register_month" class="register_cell app_textbox app_select_box">
+                        <option value="">[Tháng]</option>
+                        <?php for ($i = 1; $i < 13; $i += 1){ echo "<option value='$i'>$i</option>"; } ?>
+                    </select>
+                    <select name="register_year" id="register_year" class="register_cell app_textbox app_select_box">
+                        <option value="">[Năm]</option>
+                        <?php for ($i = 2015; $i > 1929; $i -= 1){ echo "<option value='$i'>$i</option>"; } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="app_space_line"></div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="right register_label">Bạn sống tại</div>
+                </div>
+                <div id="app_register_city" class="col-md-7">
+                    <select ng-model="app_input_city" id="register-city" name="register_city" class="register_cell app_textbox app_select_box" style="width: 336px">
+                        <option value="">-- Vui lòng chọn thành phố --</option>
+                        <?php
+                            include_once 'Process/Model/RegisterModel.php';
+                            foreach (RegisterModel::getCity() as $city) {
+                                echo '<option value="' . $city . '">' . $city . "</option>";
+                            }
+                        ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <label class="register_title">Thông tin tài khoản</label>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="right register_label">Tên đăng nhập <abbr class="app_required" title="Bắt buộc">*</abbr></div>
+                </div>
+                <div id="app_register_account" class="col-md-7">
+                    <input ng-model="app_input_account" id="register_account" required class="app_textbox" type="text" name="register_account" size="38px">
+                    <input type="button" name="btnCheckAccount" id="check-button" required class="btn btn-warning app_register_check_account" value="Kiểm tra" />
+                </div>
+            </div>
+            <div class="app_space_line"></div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="right register_label">Mật khẩu <abbr class="app_required" title="Bắt buộc">*</abbr></div>
+                </div>
+                <div id="app_register_password" class="col-md-7">
+                    <input ng-model="app_input_password" id="register_password" required type="password" class="app_textbox" name="register_password" size="38px">
+                    <span ng-model="alertPassword.text" ng-init="alertPassword.text='Mật khẩu phải tối thiểu 6 kí tự'">
+                        {{alertPassword.text}}
+                    </span>
+                </div>
+            </div>
+            <div class="app_space_line"></div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="right register_label">Xác nhận mật khẩu <abbr class="app_required" title="Bắt buộc">*</abbr></div>
+                </div>
+                <div id="app_register_confirm" class="col-md-7">
+                    <input ng-model="app_input_confirm" id="register_confirm_password" required type="password" class="app_textbox" name="register_confirmPassword" size="38px">
+                </div>
+            </div>
+        </div>
+        <div>
+            <label class="register_title">Mã kiểm tra</label>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="right register_label">Mã kiểm tra</div>
+                </div>
+                <div class="col-md-7">
+                    <div id="captcha-wrap">
+                        <img id="Captcha" src='Process/Model/CaptchaModel.php' alt="" name="captcha"/>
+                        <img ng-click="refreshCaptcha()" src="/img/refresh.jpg" alt="refresh captcha" style="cursor: pointer"/>
+                    </div>
+                </div>
+            </div>
+            <div class="app_space_line"></div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="right register_label">Nhập mã kiểm tra</div>
+                </div>
+                <div class="col-md-7">
+                    <input type="text" name="register_captcha" id="input-captcha" required class="app_textbox" size="50px">
+                </div>
+            </div>
+            <div class="app_space_line"></div>
+            <div class="row">
+                <div class="col-md-5">
+                </div>
+                <div class="col-md-7">
+                    <input type="button" class="btn btn-primary" name="submit" id="submit" value="Hoàn tất"/>
+                    <input type="reset" class="btn btn-default" value="Reset"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div id="dialogoverlay"></div>
+<div id="dialogbox">
+    <div>
+        <div id="dialogboxhead"></div>
+        <div id="dialogboxbody"></div>
+        <div id="dialogboxfoot"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    function CustomAlert(){
+        this.render = function(dialog){
+            var winW = window.innerWidth;
+            var winH = window.innerHeight;
+            var dialogoverlay = document.getElementById('dialogoverlay');
+            var dialogbox = document.getElementById('dialogbox');
+
+            dialogoverlay.style.display = "block";
+            dialogoverlay.style.height = winH+"px";
+            dialogbox.style.left = (winW/2) - (550 * .5)+"px";
+            dialogbox.style.top = "100px";
+            dialogbox.style.display = "block";
+
+            document.getElementById('dialogboxhead').innerHTML = "Thông báo";
+            document.getElementById('dialogboxbody').innerHTML = dialog;
+            document.getElementById('dialogboxfoot').innerHTML = '<button onclick="Alert.ok()" class="btn btn-default">Xác nhận</button>';
+        }
+
+        this.ok = function(){
+            document.getElementById('dialogbox').style.display = "none";
+            document.getElementById('dialogoverlay').style.display = "none";
+        }
+    }
+    var Alert = new CustomAlert();
+</script>

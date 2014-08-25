@@ -1,0 +1,167 @@
+<div class="jumbotron text-center app_standard center_screen app_jumbotron">
+    <h1>Quản lý điện thoại</h1>
+
+    <p>Thêm, xóa, sửa, liệt kê và tìm kiếm thông tin của <span class="text-danger">điện thoại</span>.</p>
+</div>
+<div ng-controller="mobileController" style="margin-top: 30px">
+    <div class="row center_screen app_search_admin" style="margin-top: 30px">
+        <div class="col-md-10">
+            <form method="get" action="../page_manager_mobile.php">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="keyword">
+
+                    <div class="input-group-btn">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Tìm kiếm</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+                <a href="../page_add_mobile.php" style="text-decoration: none; color: #ffffff">Thêm điện thoại</a>
+            </button>
+        </div>
+    </div>
+    <table class="table center_screen" style="width: 95%" id="mobile-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên điện thoại</th>
+            <th>Hãng sản xuất</th>
+            <th>Xuất xứ</th>
+            <th>Loại điện thoại</th>
+            <th style="width: 120px">Giá</th>
+            <th>Hình ảnh</th>
+            <th>Số lượng</th>
+            <th style="width: 230px">Mô tả</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        $rowPerPage = 10;
+        $pageNum = 1;
+        $data = array();
+
+        include 'Process/Model/MobileModel.php';
+
+        if (isset($_GET['page'])) {
+            $pageNum = $_GET['page'];
+        }
+
+        $offset = ($pageNum - 1) * $rowPerPage;
+
+        if (isset($_GET['keyword'])) {
+            $keyword = addslashes($_GET['keyword']);
+            if (addslashes($_GET['keyword']) != ''){
+                $data = MobileModel::getMobilesPerPageWithCondition($offset, $rowPerPage, 'Name', $keyword, true);
+            }
+            else {
+                $data = MobileModel::getMobilesPerPage($offset, $rowPerPage);
+            }
+
+        } else {
+            $data = MobileModel::getMobilesPerPage($offset, $rowPerPage);
+        }
+
+        foreach ($data as $mobile) {
+            ?>
+            <tr>
+                <form method="post" action="../page_edit_mobile.php">
+                    <td><?php echo $mobile['id'] ?></td>
+                    <td><?php echo $mobile['name'] ?></td>
+                    <td><?php echo $mobile['company'] ?></td>
+                    <td><?php echo $mobile['source'] ?></td>
+                    <td><?php echo $mobile['type'] ?></td>
+                    <td><?php echo number_format($mobile['price']) . ' VND' ?></td>
+                    <td><?php echo $mobile['image'] ?></td>
+                    <td><?php echo $mobile['quantity'] ?></td>
+                    <td><?php echo $mobile['description'] ?></td>
+                    <td class="hidden">
+                        <input type="hidden" name="id" value="<?php echo $mobile['id'] ?>"/>
+                        <input type="hidden" name="name" value="<?php echo $mobile['name'] ?>"/>
+                        <input type="hidden" name="company" value="<?php echo $mobile['company'] ?>"/>
+                        <input type="hidden" name="source" value="<?php echo $mobile['source'] ?>"/>
+                        <input type="hidden" name="type" value="<?php echo $mobile['type'] ?>"/>
+                        <input type="hidden" name="price" value="<?php echo $mobile['price'] ?>"/>
+                        <input type="hidden" name="image" value="<?php echo $mobile['image'] ?>"/>
+                        <input type="hidden" name="quantity" value="<?php echo $mobile['quantity'] ?>"/>
+                        <input type="hidden" name="description" value="<?php echo $mobile['description'] ?>"/>
+                        <input type="hidden" name="view" value="<?php echo $mobile['view'] ?>"/>
+                        <input type="hidden" name="sale" value="<?php echo $mobile['sale'] ?>"/>
+                    </td>
+                    <td>
+                        <input type="hidden" name="id" value="<?php echo $mobile['id'] ?>"/>
+                        <span class="glyphicon glyphicon-remove remove-sign" title="Xóa"></span>
+                        <input type="submit" value="Sửa" id="submit" name="submit"/>
+                    </td>
+                </form>
+            </tr>
+
+        <?php
+        }
+        ?>
+        </tbody>
+    </table>
+
+    <div class="center_screen center app_standard">
+        <ul class="pagination">
+            <?php
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                ?>
+                <li id="previous-key"><a id="previous-sign-key" href="#">&lt;</a></li>
+                <input type="text" class="hidden" id="previous-keyword"
+                       value="<?php echo addslashes($_GET['keyword']) ?>"/>
+            <?php
+            } else {
+                ?>
+                <li id="previous"><a id="previous-sign" href="#">&lt;</a></li>
+            <?php
+            }
+
+            $countRows = 0;
+
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                $countRows = MobileModel::countMobilesWithCondition(addslashes($_GET['keyword']));
+            } else {
+                $countRows = MobileModel::countMobiles();
+            }
+
+            $maxPage = ceil($countRows / $rowPerPage);
+
+            $self = $_SERVER['PHP_SELF']; // link hien tai
+            $nav = '';
+            ?>
+
+            <input type="hidden" id="currentPage" value="<?php echo $pageNum ?>"/>
+            <input type="hidden" id="maxPage" value="<?php echo $maxPage ?>"/>
+
+            <?php
+            for ($page = 1; $page <= $maxPage; ++$page) {
+                if ($page == $pageNum) {
+                    echo "<li class='active'><a href='#'>" . $page . "</a></li>";
+                } else {
+                    if (isset($_GET['keyword'])) {
+                        echo "<li><a href='" . $self . "?page=" . $page . "&keyword=" . addslashes($_GET['keyword']) . "'>" . $page . "</a></li>";
+                    } else {
+                        echo "<li><a href='" . $self . "?page=" . $page . "'>" . $page . "</a></li>";
+                    }
+                }
+            }
+
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                ?>
+                <li id="next-key"><a id="next-sign-key" href="#">&gt;</a></li>
+                <input type="text" class="hidden" id="next-keyword" value="<?php echo addslashes($_GET['keyword']) ?>"/>
+            <?php
+            } else {
+                ?>
+                <li id="next"><a id="next-sign" href="#">&gt;</a></li>
+            <?php
+            }
+            ?>
+        </ul>
+    </div>
+</div>

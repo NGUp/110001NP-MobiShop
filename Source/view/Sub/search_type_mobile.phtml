@@ -1,0 +1,6 @@
+<ul class="nav nav-pills nav-stacked">
+    <?php
+    foreach (TypeMobileModel::getTypes() as $type) :?>
+        <li><a href="page_search.php?act=type&keyword=<?php echo $type['type'] ?>"><?php echo $type['type'] ?></a></li>
+    <?php endforeach ?>
+</ul>

@@ -1,0 +1,104 @@
+<div class="jumbotron text-center app_standard center_screen app_jumbotron">
+    <h1>Quản lý tài khoản người dùng</h1>
+
+    <p>Sửa chi tiết <span class="text-danger">Tài khoản người dùng</span>.</p>
+</div>
+<div class="app_standard center_screen"">
+<div id="alert">
+</div>
+<form method="post" action="../Process/EditAccountManageController.php">
+    <div style="margin-top: 30px"></div>
+    <input class="hidden" name="id" value="<?php echo addslashes($_POST['id']) ?>"/>
+
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Tên đăng nhập <abbr title="Bắt buộc" class="app_required">*</abbr></label>
+        </div>
+        <div class="col-md-7">
+            <label><?php echo addslashes($_POST['account']) ?></label>
+            <input type="hidden" id="account" name="account" class="form-control text_box disabled"
+                   value="<?php echo addslashes($_POST['account']) ?>"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Họ tên </label>
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="name" name="name" class="form-control text_box"
+                   value="<?php echo addslashes($_POST['fullname']) ?>"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Phân quyền</label>
+        </div>
+        <div class="col-md-7">
+            <select id="permission" name="permission" class="form-control text_box">
+                <option value selected="selected"
+                        style="text-align: center"><?php echo addslashes($_POST['permission']) ?></option>
+                <?php
+                if (addslashes($_POST['permission']) == 1) {
+                    echo '<option value="0">0</option>';
+                } else {
+                    echo '<option value="1">1</option>';
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Thành phố</label>
+        </div>
+        <div class="col-md-7">
+            <select id="city" name="city" class="form-control text_box">
+                <option value selected="selected"
+                        style="text-align: center"><?php echo addslashes($_POST['city']) ?></option>
+                <?php
+                include 'Process/Model/CityModel.php';
+                foreach (CityModel::getCities() as $city) {
+                    if ($city['city'] != addslashes($_POST['city'])) {
+                        ?>
+                        <option value="<?php echo $city['city'] ?>"><?php echo $city['city'] ?></option>
+                    <?php
+                    }
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Ngày sinh</label>
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="birthday" name="birthday" class="form-control text_box"
+                   value="<?php echo addslashes($_POST['birthday']) ?>"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Mật khẩu</label>
+        </div>
+        <div class="col-md-7">
+            <input type="hidden" id="password" name="password" value="<?php echo addslashes($_POST['password']) ?>"/>
+            <input type="hidden" id="reset" name="reset" value="0"/>
+            <input type="checkbox" id="btnReset" name="btnReset"/> Reset mật khẩu
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-7">
+            <input type="button" class="btn btn-primary" name="submit" id="submit" value="Xác nhận"/>
+            <input type="button" class="btn btn-default" name="cancel" id="cancel" value="Hủy"/>
+        </div>
+    </div>
+</form>
+</div>

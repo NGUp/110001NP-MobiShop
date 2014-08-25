@@ -1,0 +1,113 @@
+<div class="jumbotron text-center app_standard center_screen app_jumbotron">
+    <h1>Quản lý điện thoại</h1>
+
+    <p>Thêm <span class="text-danger">điện thoại</span>.</p>
+</div>
+<div class="app_standard center_screen"">
+<div id="alert">
+</div>
+<form method="post" enctype="multipart/form-data" action="../Process/AddMobileManageController.php">
+    <div style="margin-top: 30px"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Tên điện thoại <abbr title="Bắt buộc" class="app_required">*</abbr></label>
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="mobile" name="mobile" class="form-control text_box"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Nhà sản xuất</label>
+        </div>
+        <div class="col-md-7">
+            <select id="manufacturer" name="manufacturer" class="form-control text_box">
+                <option value selected="selected" style="text-align: center">Vui lòng chọn nhà sản xuất</option>
+                <?php
+                include 'Process/Model/ManufacturerModel.php';
+                foreach (ManufacturerModel::getManufacturer() as $manufacturer) : ?>
+                    <option value="<?php echo $manufacturer['name'] ?>"><?php echo $manufacturer['name'] ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Xuất xứ</label>
+        </div>
+        <div class="col-md-7">
+            <select id="origin" name="origin" class="form-control text_box">
+                <option value selected="selected" style="text-align: center">Vui lòng chọn nơi sản xuất</option>
+                <?php
+                include 'Process/Model/OriginModel.php';
+                foreach (OriginModel::getOrigins() as $origin) : ?>
+                    <option value="<?php echo $origin ?>"><?php echo $origin ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Hình ảnh</label>
+        </div>
+        <div class="col-md-7">
+            <input type="file" id="image" name="image" class="btn btn-default"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Loại điện thoại</label>
+        </div>
+        <div class="col-md-7">
+            <select id="type" name="type" class="form-control text_box">
+                <option value selected="selected" style="text-align: center">Vui lòng loại điện thoại</option>
+                <?php
+                include 'Process/Model/TypeMobileModel.php';
+                foreach (TypeMobileModel::getTypes() as $type) : ?>
+                    <option value="<?php echo $type['type'] ?>"><?php echo $type['type'] ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Giá cả</label>
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="price" name="price" class="form-control text_box"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Mô tả</label>
+        </div>
+        <div class="col-md-7">
+            <textarea rows="6" cols="110" id="description" name="description" class="text_area text_box"
+                      style="max-width: 100%"></textarea>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5">
+            <label class="right">Số lượng</label>
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="quantity" name="quantity" class="form-control text_box"/>
+        </div>
+    </div>
+    <div class="app_space_line"></div>
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-7">
+            <input type="button" class="btn btn-primary" name="submit" id="submit" value="Xác nhận"/>
+            <input type="button" class="btn btn-default" name="cancel" id="cancel" value="Hủy"/>
+        </div>
+    </div>
+</form>
+</div>

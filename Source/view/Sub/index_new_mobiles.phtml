@@ -1,0 +1,20 @@
+<h4 class="panel-heading btn-info" style="margin-left: 40px">Sản phẩm mới</h4>
+<ul style="list-style: none">
+    <?php
+    include_once 'Process/Model/MobileModel.php';
+    foreach (MobileModel::getMobilesByDescDate() as $mobile) : ?>
+        <li>
+            <div class="thumbnail" style="text-align: center">
+                <div class="right">
+                    <img src="../img/new.png" atl="New" style="width: 50px; margin: -5px -5px 0px 0px"/>
+                </div>
+                <div style="width: 60px; overflow: hidden; margin-left: auto; margin-right: auto; display: block">
+                    <a href="../page_detail_product.php?ID=<?php echo $mobile['id'] ?>">
+                        <img src="../img/Mobile/<?php echo $mobile['image'] ?>" style="text-align: center;" alt="<?php echo $mobile['name'] ?>">
+                    </a>
+                </div>
+                <label><?php echo $mobile['name'] ?></label>
+            </div>
+        </li>
+    <?php endforeach ?>
+</ul>

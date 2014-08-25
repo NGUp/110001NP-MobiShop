@@ -1,0 +1,138 @@
+<div class="jumbotron text-center app_standard center_screen app_jumbotron">
+    <h1>Quản lý nhà sản xuất</h1>
+
+    <p>Thêm, xóa, sửa, liệt kê và tìm kiếm thông tin của <span class="text-danger">nhà sản xuất</span>.</p>
+</div>
+<div class="app_standard center_screen" ng-controller="manufacturerController">
+    <div class="row center_screen app_search_admin" style="margin-top: 30px">
+        <div class="col-md-10">
+            <form method="get" action="../page_manager_manufacturer.php">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="keyword">
+
+                    <div class="input-group-btn">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Tìm kiếm</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+                <a href="../page_add_manufacturer.php" style="text-decoration: none; color: #ffffff">Thêm nhà sản
+                    xuất</a>
+            </button>
+        </div>
+    </div>
+    <table class="table" id="manufacturer-table">
+        <thead>
+        <tr>
+            <th>Mã hãng</th>
+            <th>Hãng sản xuất</th>
+            <th>Logo</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        $rowPerPage = 10;
+        $pageNum = 1;
+        $data = array();
+
+        include 'Process/Model/ManufacturerModel.php';
+
+        if (isset($_GET['page'])) {
+            $pageNum = $_GET['page'];
+        }
+        $offset = ($pageNum - 1) * $rowPerPage;
+
+        if (isset($_GET['keyword'])) {
+            $keyword = addslashes($_GET['keyword']);
+            if (addslashes($_GET['keyword']) != '') {
+                $data = ManufacturerModel::getManufacturersPerPageWithCondition($offset, $rowPerPage, 'name', $keyword, true);
+            } else {
+                $data = ManufacturerModel::getManufacturerPerPage($offset, $rowPerPage);
+            }
+
+        } else {
+            $data = ManufacturerModel::getManufacturerPerPage($offset, $rowPerPage);
+        }
+
+        foreach ($data as $manufacturer) : ?>
+            <tr>
+                <form method="post" action="../page_edit_manufacturer.php">
+                    <td><?php echo $manufacturer['id'] ?></td>
+                    <td><?php echo $manufacturer['name'] ?></td>
+                    <td><?php echo $manufacturer['logo'] ?></td>
+                    <td class="hidden">
+                        <input type="hidden" name="id" value="<?php echo $manufacturer['id'] ?>"/>
+                        <input type="hidden" name="name" value="<?php echo $manufacturer['name'] ?>"/>
+                        <input type="hidden" name="logo" value="<?php echo $manufacturer['logo'] ?>"/>
+                    </td>
+                    <td>
+                        <input type="hidden" name="id" value="<?php echo $manufacturer['id'] ?>"/>
+                        <span class="glyphicon glyphicon-remove remove-sign"></span>
+                        <input type="submit" value="Sửa" id="submit" name="submit"/>
+                    </td>
+                </form>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <div class="center_screen center app_standard">
+        <ul class="pagination">
+            <?php
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                ?>
+                <li id="previous-key"><a id="previous-sign-key" href="#">&lt;</a></li>
+                <input type="text" class="hidden" id="previous-keyword"
+                       value="<?php echo addslashes($_GET['keyword']) ?>"/>
+            <?php
+            } else {
+                ?>
+                <li id="previous"><a id="previous-sign" href="#">&lt;</a></li>
+            <?php
+            }
+
+            $countRows = 0;
+
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                $countRows = ManufacturerModel::countMobilesWithCondition(addslashes($_GET['keyword']));
+            } else {
+                $countRows = ManufacturerModel::countManufacturers();
+            }
+
+            $maxPage = ceil($countRows / $rowPerPage);
+
+            $self = $_SERVER['PHP_SELF']; // link hien tai
+            $nav = '';
+            ?>
+
+            <input type="hidden" id="currentPage" value="<?php echo $pageNum ?>"/>
+            <input type="hidden" id="maxPage" value="<?php echo $maxPage ?>"/>
+
+            <?php
+            for ($page = 1; $page <= $maxPage; ++$page) {
+                if ($page == $pageNum) {
+                    echo "<li class='active'><a href='#'>" . $page . "</a></li>";
+                } else {
+                    echo "<li><a href='" . $self . "?page=" . $page . "'>" . $page . "</a></li>";
+                }
+            }
+
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                ?>
+                <li id="next-key"><a id="next-sign-key" href="#">&gt;</a></li>
+                <input type="text" class="hidden" id="next-keyword" value="<?php echo addslashes($_GET['keyword']) ?>"/>
+            <?php
+            } else {
+                ?>
+                <li id="next"><a id="next-sign" href="#">&gt;</a></li>
+            <?php
+            }
+            ?>
+        </ul>
+    </div>
+</div>

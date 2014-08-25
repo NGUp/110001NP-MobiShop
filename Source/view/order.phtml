@@ -1,0 +1,140 @@
+<div class="jumbotron text-center app_standard center_screen app_jumbotron">
+    <h1>Quản lý đơn đặt hàng</h1>
+    <p>Thêm, xóa, sửa, liệt kê và tìm kiếm thông tin của <span class="text-danger">đơn đặt hàng</span>.</p>
+</div>
+<div class="app_standard center_screen" ng-controller="orderController">
+    <div class="row center_screen app_search_admin" style="margin-top: 30px">
+        <div class="col-md-10">
+            <form method="get" action="../page_manager_order.php">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="keyword">
+                    <div class="input-group-btn">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Tìm kiếm</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Mã đơn đặt hàng</th>
+            <th>Mã khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Tổng tiền</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+
+        $rowPerPage = 10;
+        $pageNum = 1;
+        $data = array();
+
+        include 'Process/Model/OrderModel.php';
+
+        if (isset($_GET['page'])) {
+            $pageNum = $_GET['page'];
+        }
+        $offset = ($pageNum - 1) * $rowPerPage;
+
+        if (isset($_GET['keyword'])) {
+            $keyword = addslashes($_GET['keyword']);
+            if (addslashes($_GET['keyword']) != '') {
+                $data = OrderModel::getOrdersPerPageWithCondition($offset, $rowPerPage, 'IDUser', $keyword, false);
+            }
+            else {
+                $data = OrderModel::getOrdersPerPage($offset, $rowPerPage);
+            }
+
+        } else {
+            $data = OrderModel::getOrdersPerPage($offset, $rowPerPage);
+        }
+        foreach ($data as $order) : ?>
+            <tr>
+                <form method="post" action="../page_manager_cart.php">
+                    <td><?php echo $order['id'] ?></td>
+                    <td><?php echo $order['userID'] ?></td>
+                    <td><?php echo $order['date'] ?></td>
+                    <td><?php echo number_format($order['total']) . ' VND' ?></td>
+                    <td class="hidden">
+                        <input type="hidden" name="id" value="<?php echo $order['id'] ?>"/>
+                        <input type="hidden" name="userID" value="<?php echo $order['userID'] ?>"/>
+                        <input type="hidden" name="date" value="<?php echo $order['date'] ?>"/>
+                        <input type="hidden" name="total" value="<?php echo $order['total'] ?>"/>
+                    </td>
+                    <td>
+                        <input type="hidden" name="id" value="<?php echo $order['id'] ?>"/>
+                        <span class="glyphicon glyphicon-remove remove-sign"></span>
+                        <input type="submit" value="Sửa" id="submit" name="submit"/>
+                    </td>
+                </form>
+            </tr>
+        <?php endforeach ?>
+        </tbody>
+    </table>
+
+    <div class="center_screen center app_standard">
+        <ul class="pagination">
+            <?php
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                ?>
+                <li id="previous-key"><a id="previous-sign-key" href="#">&lt;</a></li>
+                <input type="text" class="hidden" id="previous-keyword"
+                       value="<?php echo addslashes($_GET['keyword']) ?>"/>
+            <?php
+            } else {
+                ?>
+                <li id="previous"><a id="previous-sign" href="#">&lt;</a></li>
+            <?php
+            }
+
+            $countRows = 0;
+
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                $countRows = OrderModel::countOrdersWithCondition(addslashes($_GET['keyword']));
+            } else {
+                $countRows = OrderModel::countOrders();
+            }
+
+            $maxPage = ceil($countRows / $rowPerPage);
+
+            $self = $_SERVER['PHP_SELF']; // link hien tai
+            $nav = '';
+            ?>
+
+            <input type="hidden" id="currentPage" value="<?php echo $pageNum ?>"/>
+            <input type="hidden" id="maxPage" value="<?php echo $maxPage ?>"/>
+
+            <?php
+            for($page = 1; $page <= $maxPage; ++$page)
+            {
+                if ($page == $pageNum)
+                {
+                    echo "<li class='active'><a href='#'>" . $page . "</a></li>";
+                }
+                else
+                {
+                    echo "<li><a href='" . $self . "?page=" . $page . "'>" . $page . "</a></li>";
+                }
+            }
+
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                ?>
+                <li id="next-key"><a id="next-sign-key" href="#">&gt;</a></li>
+                <input type="text" class="hidden" id="next-keyword" value="<?php echo addslashes($_GET['keyword']) ?>"/>
+            <?php
+            } else {
+                ?>
+                <li id="next"><a id="next-sign" href="#">&gt;</a></li>
+            <?php
+            }
+            ?>
+        </ul>
+    </div>
+</div>

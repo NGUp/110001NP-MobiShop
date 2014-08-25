@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="carousel slide" id="carousel-958868" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-slide-to="0" data-target="#carousel-958868" class="active">
+            </li>
+            <?php for ($index = 1; $index < 6; ++$index) : ?>
+                <li data-slide-to="<?php echo $index ?>" data-target="#carousel-958868">
+                </li>
+            <?php endfor ?>
+        </ol>
+        <div class="carousel-inner">
+            <div class="item active">
+                <img alt="" src="../img/slideshow/1.jpg"/>
+
+                <div class="carousel-caption">
+                </div>
+            </div>
+            <?php for ($index = 2; $index < 6; ++$index) : ?>
+                <div class="item">
+                    <img alt="" src="../img/slideshow/<?php echo $index ?>.jpg"/>
+
+                    <div class="carousel-caption">
+                    </div>
+                </div>
+            <?php endfor ?>
+        </div>
+        <a class="left carousel-control" href="#carousel-958868" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-958868" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,149 @@
+<div class="jumbotron text-center center_screen app_standard app_jumbotron">
+    <h1>Quản lý loại điện thoại</h1>
+
+    <p>Thêm, xóa, sửa, liệt kê và tìm kiếm thông tin của <span class="text-danger">loại điện thoại</span>.</p>
+</div>
+<div class="app_standard center_screen" ng-controller="typeController">
+    <div id="alert"></div>
+    <div class="row center_screen app_search_admin" style="margin-top: 30px">
+        <div class="col-md-10">
+            <form method="get" action="../page_manager_type_mobile.php">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="keyword">
+
+                    <div class="input-group-btn">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Tìm kiếm</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success" data-toggle="modal" data-target="#addModal">Thêm loại điện thoại</button>
+        </div>
+    </div>
+    <table class="table" id="type-mobile-table">
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>Loại điện thoại</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody id="body-table">
+        <?php
+        $rowPerPage = 10;
+        $pageNum = 1;
+        $data = array();
+
+        include 'Process/Model/TypeMobileModel.php';
+
+        if (isset($_GET['page'])) {
+            $pageNum = $_GET['page'];
+        }
+        $offset = ($pageNum - 1) * $rowPerPage;
+
+        if (isset($_GET['keyword'])) {
+            $keyword = addslashes($_GET['keyword']);
+            if ($keyword != '') {
+                $data = TypeMobileModel::getTypesPerPageWithCondition($offset, $rowPerPage, 'type', $keyword, true);
+            }
+            else {
+                $data = TypeMobileModel::getTypesPerPage($offset, $rowPerPage);
+            }
+        } else {
+            $data = TypeMobileModel::getTypesPerPage($offset, $rowPerPage);
+        }
+
+        foreach ($data as $type) : ?>
+            <tr>
+                <td><?php echo $type['id'] ?></td>
+                <td><?php echo $type['type'] ?></td>
+                <td><span class="glyphicon glyphicon-remove remove-sign"></span></td>
+            </tr>
+        <?php endforeach ?>
+        </tbody>
+    </table>
+
+    <div class="center_screen center app_standard">
+        <ul class="pagination">
+            <?php
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                ?>
+                <li id="previous-key"><a id="previous-sign-key" href="#">&lt;</a></li>
+                <input type="text" class="hidden" id="previous-keyword"
+                       value="<?php echo addslashes($_GET['keyword']) ?>"/>
+            <?php
+            } else {
+                ?>
+                <li id="previous"><a id="previous-sign" href="#">&lt;</a></li>
+            <?php
+            }
+
+            $countRows = 0;
+
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                $countRows = TypeMobileModel::countTypeMobilesWithCondition(addslashes($_GET['keyword']));
+            } else {
+                $countRows = TypeMobileModel::countTypeMobiles();
+            }
+
+            $maxPage = ceil($countRows / $rowPerPage);
+
+            $self = $_SERVER['PHP_SELF']; // link hien tai
+            $nav = '';
+            ?>
+
+            <input type="hidden" id="currentPage" value="<?php echo $pageNum ?>"/>
+            <input type="hidden" id="maxPage" value="<?php echo $maxPage ?>"/>
+
+            <?php
+            for ($page = 1; $page <= $maxPage; ++$page) {
+                if ($page == $pageNum) {
+                    echo "<li class='active'><a href='#'>" . $page . "</a></li>";
+                } else {
+                    echo "<li><a href='" . $self . "?page=" . $page . "'>" . $page . "</a></li>";
+                }
+            }
+
+            if (isset($_GET['keyword']) && addslashes($_GET['keyword']) != '') {
+                ?>
+
+                <li id="next-key"><a id="next-sign-key" href="#">&gt;</a></li>
+                <input type="text" class="hidden" id="next-keyword" value="<?php echo addslashes($_GET['keyword']) ?>"/>
+
+            <?php
+            } else {
+                ?>
+                <li id="next"><a id="next-sign" href="#">&gt;</a></li>
+            <?php
+            }
+            ?>
+        </ul>
+    </div>
+</div>
+
+<div id="addModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width: 411px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Thêm loại điện thoại</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-4">
+                    Loại điện thoại
+                </div>
+                <div class="col-md-8">
+                    <input type="text" id="name-type"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-button">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>

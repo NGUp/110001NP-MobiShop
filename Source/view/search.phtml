@@ -1,0 +1,27 @@
+<div class="app_standard center_screen">
+    <div class="row" style="margin: 10px 0px 10px 0px">
+        <button type="button" class="btn btn-danger right" data-toggle="collapse" data-target="#advanceSearch">
+            Tìm kiếm nâng cao
+        </button>
+    </div>
+
+    <div class="panel-group collapse" id="advanceSearch">
+        <div class="panel panel-default">
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <?php include 'view/Sub/search_advance.phtml' ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app_footer_line"></div>
+    <div class="row">
+        <div class="col-md-3">
+            <?php include 'Sub/app_user_navigator.phtml'; ?>
+        </div>
+        <div class="col-md-9">
+            <?php include 'Sub/search_content.phtml' ?>
+        </div>
+    </div>
+</div>

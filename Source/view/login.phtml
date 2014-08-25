@@ -1,0 +1,29 @@
+<div name="loginForm" class="app_standard center_screen">
+    <div class="main_login">
+        <div id="alert"></div>
+        <div id="app_login_account" class="input-group">
+            <span class="input-group-addon">Tên đăng nhập</span>
+            <input id="login-user" name='login_user' type="text" class="form-control">
+        </div>
+        <div class="app_space_line"></div>
+        <div class="input-group">
+            <span class="input-group-addon" style="padding-right: 51px">Mật khẩu</span>
+            <input type="password" id="login-password" name="login_password" class="form-control">
+        </div>
+        <div class="app_space_line"></div>
+        <input type="checkbox" id="login-keep" value="false" name="login_keepLogin"> Duy trì đăng nhập
+        <a href="#" class="right">Quên mật khẩu</a>
+        <div class="app_space_line"></div>
+        <div class="right">
+            <button type="button" id="submit" name="submit" class="btn btn-primary">Đăng nhập</button>
+            <button type="button" class="btn btn-default">Hủy</button>
+        </div>
+    </div>
+</div>
+
+<div class="template hidden" id="AlertTemplate">
+    <div class="alert alert-{ status } alert-dismissable add_alert" style="margin-bottom: 15px; width: 460px">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong>Cảnh báo!</strong> { alert }
+    </div>
+</div>

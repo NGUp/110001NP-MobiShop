@@ -1,0 +1,41 @@
+<nav class="navbar navbar-inverse app_header_admin" role="navigation" style="margin-top: -65px">
+    <div class="navbar-header">
+        <a class="navbar-brand app_click" href="../../page_index_admin.php">MobiShop</a>
+    </div>
+    <ul class="nav navbar-nav">
+        <li><a href="../../page_manager_mobile.php" class="app_click">Điện thoại</a></li>
+        <li><a href="../../page_manager_type_mobile.php" class="app_click">Loại điện thoại</a></li>
+        <li><a href="../../page_manager_manufacturer.php" class="app_click">Nhà sản xuất</a></li>
+        <li><a href="../../page_manager_account.php" class="app_click">Tài khoản người dùng</a></li>
+        <li><a href="../../page_manager_order.php" class="app_click">Đơn đặt hàng</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right" style="margin-right: 90px">
+        <li>
+            <a class="navbar-brand">
+                <?php
+                $user = addslashes($_SESSION['user']);
+                echo $user;
+                ?>
+            </a>
+        </li>
+        <li><a href="#" data-toggle="modal" data-target="#smallModal">Thoát</a></li>
+    </ul>
+</nav>
+
+<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Xác nhận</h4>
+            </div>
+            <div class="modal-body">
+                Bạn đồng ý thoát chứ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <a href="../../Process/LogoutController.php"><button type="button" class="btn btn-success">Đồng ý</button></a>
+            </div>
+        </div>
+    </div>
+</div>
